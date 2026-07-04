@@ -21,5 +21,7 @@ test('standard_user wrong password login', async ({ page }) => {
   await page.locator('[data-test="password"]').fill('wrong_password');
   await page.locator('[data-test="login-button"]').click();
   await expect(page.locator('[data-test="error"]')).toBeVisible();
-  await expect(page.locator('[data-test="error"]')).toContainText('Username and password do not match any user in this service');
+  await expect(page.locator('[data-test="error"]')).toContainText(
+    'Username and password do not match any user in this service'
+  );
 });
