@@ -48,17 +48,16 @@ jobs:
 
       # Генерируем Allure отчет стабильной версией экшена
       - name: Generate Allure Report
-        uses: simple-elf/allure-report-action@v1.9
         if: always()
-        with:
-          allure_results: allure-results
-          allure_history: allure-history
+        run: |
+          npm install -g allure-commandline
+          allure generate ./allure-results --clean -o ./allure-history
 
       # Публикуем статичный сайт на GitHub Pages
-      - name: Deploy Allure to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
-        if: always()
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: allure-history
+      # - name: Deploy Allure to GitHub Pages
+      #   uses: peaceiris/actions-gh-pages@v4
+      #   if: always()
+      #   with:
+      #     github_token: ${{ secrets.GITHUB_TOKEN }}
+      #     publish_branch: gh-pages
+      #     publish_dir: allure-history
