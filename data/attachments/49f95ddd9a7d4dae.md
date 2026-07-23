@@ -1,0 +1,78 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: hw-10-locators/calendar.spec.ts >> test
+- Location: hw-10-locators/calendar.spec.ts:3:1
+
+# Error details
+
+```
+Test timeout of 30000ms exceeded.
+```
+
+```
+Error: locator.click: Test timeout of 30000ms exceeded.
+Call log:
+  - waiting for locator('#datepicker .input-group-addon')
+    - waiting for" https://webdriveruniversity.com/.well-known/captcha/?y=ipc:52.188.198.97:1784774586.269&r=%2FDatepicker%2Findex.html" navigation to finish...
+    - navigated to "https://webdriveruniversity.com/.well-known/captcha/?y=ipc:52.188.198.97:1784774586.269&r=%2FDatepicker%2Findex.html"
+
+```
+
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - img "Robot" [ref=e4]
+    - heading "Our system thinks you might be a robot!" [level=1] [ref=e5]
+    - paragraph [ref=e6]: We're really sorry about this, but it's getting harder and harder to tell the difference between humans and bots these days.
+    - generic [ref=e7]:
+      - paragraph [ref=e8]: Please complete the captcha below to prove you're a human and proceed to the page you're trying to reach.
+      - generic [ref=e9]:
+        - generic [ref=e11]:
+          - img "Retype the CAPTCHA code from the image" [ref=e13]
+          - generic [ref=e14]:
+            - link "Change the CAPTCHA code" [ref=e15] [cursor=pointer]:
+              - /url: "#"
+              - img "Change the CAPTCHA code" [ref=e16]
+            - link "Speak the CAPTCHA code" [ref=e17] [cursor=pointer]:
+              - /url: /.well-known/captcha/343/botdetect/?y=ipc:52.188.198.97:1784774586.269&get=sound&c=bd_captcha&t=86602c9e555c21ba6b5e01ddd7024569&sid=343&s=9c05dd66857e508b39c496d951df2009
+              - img "Speak the CAPTCHA code" [ref=e18]
+        - textbox [ref=e20]
+        - button "CONTINUE" [ref=e21]
+  - contentinfo [ref=e22]:
+    - paragraph [ref=e23]: This page requires cookies to be enabled in your browser settings. Please check this setting and enable cookies (if disabled). sid:343
+```
+
+# Test source
+
+```ts
+  1  | import { test, expect } from '@playwright/test';
+  2  | 
+  3  | test('test', async ({ page }) => {
+  4  |   await page.goto('https://webdriveruniversity.com/Datepicker/index.html', {
+  5  |     waitUntil: 'domcontentloaded',
+  6  |   });
+  7  | 
+> 8  |   await page.locator('#datepicker .input-group-addon').click();
+     |                                                        ^ Error: locator.click: Test timeout of 30000ms exceeded.
+  9  | 
+  10 |   const nextMonth = page.locator('.datepicker-dropdown .next').first();
+  11 |   await nextMonth.click();
+  12 | 
+  13 |   const day15 = page
+  14 |     .locator('.datepicker-dropdown .day')
+  15 |     .filter({ hasText: '15' })
+  16 |     .first();
+  17 |   await day15.click();
+  18 | 
+  19 |   await expect(page.locator('#datepicker input')).toHaveValue(/15/);
+  20 | });
+  21 | 
+```
